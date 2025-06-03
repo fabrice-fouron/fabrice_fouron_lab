@@ -85,11 +85,12 @@ async def signup(user: User):
         return e
 
 @app.post("/product")
-async def buy(product: Product):
-    if product.name == None:
-        return "This page displays the different products that are available"
+async def product(product: Product):
+    if len(product.name) == 0:
+        return "There is no product provided"
     else:
-        return f"This product is a(n) {product.name} and its price is ${product.price}"
+        return product
+
 
 @app.post("/add-product")
 async def get_price(product: Product):
