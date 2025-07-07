@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Cookie, Header
 from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
 users = {
@@ -85,7 +86,7 @@ async def signup(user: User):
         return e
 
 @app.post("/product")
-async def buy(product: Product):
+async def display_product_info(product: Product):
     if product.name == None:
         return "This page displays the different products that are available"
     else:
@@ -123,3 +124,11 @@ async def add_rating(product_name: str, rating: int):
                     products[i]["Rating"] = (products[i]["Rating"] + rating) / 2
                 return f"The new rating of the {product_name} is {products[i]['Rating']}" 
     return "The product name does not match any of what already exists."
+
+@app.get('/headers')
+async def get_headers(email: Optional[str] = Header(None), username: Optional[str] = Header(None)):
+    return {'email': email, 'username': username}
+
+@app.get('/cookie')
+async def get_cookies(random_name: str = Cookie(None)):
+    return {'random_name': random_name}
