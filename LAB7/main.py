@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from database_file import *
 
 app = FastAPI()
 users = {
@@ -85,12 +86,11 @@ async def signup(user: User):
         return e
 
 @app.post("/product")
-async def product(product: Product):
-    if len(product.name) == 0:
-        return "There is no product provided"
+async def buy(product: Product):
+    if product.name == None:
+        return "This page displays the different products that are available"
     else:
-        return product
-
+        return f"This product is a(n) {product.name} and its price is ${product.price}"
 
 @app.post("/add-product")
 async def get_price(product: Product):
@@ -124,3 +124,43 @@ async def add_rating(product_name: str, rating: int):
                     products[i]["Rating"] = (products[i]["Rating"] + rating) / 2
                 return f"The new rating of the {product_name} is {products[i]['Rating']}" 
     return "The product name does not match any of what already exists."
+    
+@app.get("/query/simple")
+async def single_simple_query():
+    return simple_query()
+
+@app.get("/query/join1")
+async def join1():
+    return inner_join_query_1()
+
+@app.get("/query/join2")
+async def join2():
+    return inner_join_query_2()
+
+@app.get("/query/join3")
+async def join3():
+    return inner_join_query_3()
+
+@app.get("/query/join4")
+async def join4():
+    return inner_join_query_4()
+
+@app.get("/query/join5")
+async def join5():
+    return inner_join_query_5_with_function()
+
+@app.get("/query/function2")
+async def function2():
+    return function_query_2()
+
+@app.get("/query/function3")
+async def function3():
+    return function_query_3()
+
+@app.get("/query/function4")
+async def function4():
+    return function_query_4()
+
+@app.get("/query/function5")
+async def function5():
+    return function_query_5()
