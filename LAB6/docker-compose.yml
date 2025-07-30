@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: helloworld
+    ports:
+      - "3306:3306"
+    volumes:
+      - shop_data:/var/lib/mysql
+
+volumes:
+  shop_data:
