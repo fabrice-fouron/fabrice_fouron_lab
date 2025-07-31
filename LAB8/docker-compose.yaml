@@ -12,7 +12,20 @@ services:
       - ./data:/data
     command: server /data --console-address ":9001"
 
-  redis:
-    image: redis:latest
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "6379:6379"
+
+  postfix:
+    image: boky/postfix:latest
+    expose:
+    - "25:25"
+    environment:
+      - MYNETWORKS=127.0.0.0/8 172.0.0.0/24
+      - HOSTNAME=localhost
+      - SENDER_DOMAIN=localhost
+      - ALLOW_EMPTY_SENDER_DOMAINS=true
     ports:
-      - "6379:6379"
+      - "25:25"
+    restart: always

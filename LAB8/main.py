@@ -1,11 +1,17 @@
 from minio import Minio
 from fastapi import FastAPI
+import smtplib
+from email.message import EmailMessage
 
 app = FastAPI()
 
-@app.route("/save-files")
+@app.get("/save-files")
 async def upload_file():
     return save_file()
+
+@app.get("/new-email")
+async def new_email():
+    return send_email()
 
 def save_file():
     try:
@@ -22,4 +28,19 @@ def save_file():
         return "All Good!"
     except Exception as e:
         return f"There was an error: {e}"
-    
+
+# The email bonces, I am not sure if it is because I am running everything in localhost
+def send_email():
+    msg = EmailMessage()
+    msg.set_content("This is a test email from localhost")
+    msg["Subject"] = "Hello World"
+    msg["From"] = "test@localhost"
+    msg["To"] = "localhost"
+
+    try:
+        with smtplib.SMTP("localhost", 25) as server:
+            server.send_message(msg)
+        return "Email was sent"
+    except Exception as e:
+        print(e)
+        return "Error"
