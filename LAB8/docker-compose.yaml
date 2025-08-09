@@ -12,10 +12,11 @@ services:
       - ./data:/data
     command: server /data --console-address ":9001"
 
-  # redis:
-  #   image: redis:latest
-  #   ports:
-  #     - "6379:6379"
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
 
   postfix:
     image: boky/postfix:latest
