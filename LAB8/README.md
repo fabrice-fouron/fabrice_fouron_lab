@@ -2,9 +2,12 @@
 ## Setup
 Things to install: python
 
-- For python, create an environment from which you will run the code. Install the following packages: ```uvicorn```, ```fastapi```
+- For python, create an environment from which you will run the code in. Install the following packages: ```uvicorn```, ```fastapi```. Use this command to achieve this
+```
+pip install fastapi uvicorn redis minio
+```
 
-#### On Docker, you will need to download the following images:
+#### On Docker, you will need to download the latest versions of the following images:
 - ```minio/minio```
 - ```redis```
 - ```boky/postfix```
@@ -14,13 +17,25 @@ The ```docker-compose.yaml``` file specifies the services that will be given
 ## How to run
 First, you need to open the terminal in the **LAB8/** folder.
 
-To run the server, you enter the followin command in the console:
+To run the services, run the following command:
+```
+docker compose up
+```
+When the services are ready to run the python server, you enter the following command in the console:
 ```
 uvicorn main:app --port 8080
 ```
 
 #### There are different routes that are available:
 - ```/save-files``` It gives the ability to save files on the MinIO object storage service. It uses the GET verb -> (http://localhost:8080/save-files)
-- ```/new-email``` It uses the email service postfix to send an email to a user. It uses the GET verb -> (http://localhost:8080/save-files)
-- ```/set-user-info``` It uses the Redis service to save information. It uses the POST verb -> (http://localhost:8080/set-user-info)
+- ```/new-email``` It uses the email service postfix to send an email to a user. It uses the GET verb -> (http://localhost:8080/new-email) -- For some reason, I was not able to get it to work.
+- ```/set-user-info``` It uses the Redis service to save information. It uses the POST verb -> (http://localhost:8080/set-user-info). In the body, you need to have the following attributes:
+    ```
+    {
+        "id":"anID",
+        "first_name":"first name",
+        "last_name":"last name",
+        "grad_year":"1"
+    }
+    ```
 - ```/get-user-info``` It uses the Redis service to get information on a user given a specific ID. It uses the POST verb -> (http://localhost:8080/get-user-info). The query string parameter needed is the id. Add ```?student_id={id}``` to get the information needed
